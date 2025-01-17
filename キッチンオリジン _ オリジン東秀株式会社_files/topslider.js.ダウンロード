@@ -1,0 +1,28 @@
+(function($) {
+
+function setimage(){
+	var $height =$(window).height();
+	var $width =$(window).width();
+	var win_ratio = $width / $height;
+
+	$(".opening").css({"height":$height});
+	$(".opening ul li").css({"height":$height});
+
+	if (win_ratio > 1.5){
+		$(".opening ul li img.opening__img").css({"width":"100%","height":"auto","margin-left":0});
+		var winwidth = $(".opening").width();
+		var imgheight = winwidth*0.66;
+		var winheight = $(".opening").height();
+		var imgtopmargin = (imgheight-winheight)/2;
+		$(".opening ul li img.opening__img").css({"margin-top":-imgtopmargin});
+	}else if (win_ratio < 1.5){
+		var imgwidth = (($height/800))*1200;
+		var winwidth = $(".opening").width();
+		var imgmargin = (winwidth-imgwidth)/2;
+		$(".opening ul li img.opening__img").css({"width":imgwidth,"height":$height,"margin-left":imgmargin,"margin-top":0});
+	}
+}
+$(window).on('load resize', function(){
+	setimage();
+});
+})(jQuery);

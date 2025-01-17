@@ -1,0 +1,428 @@
+@charset "utf-8";
+
+/**
+ * YUI 3.5.0 - reset.css (http: //developer.yahoo.com/yui/3/cssreset/)
+ * http: //cssreset.com
+ * Copyright 2012 Yahoo! Inc. All rights reserved.
+ * http: //yuilibrary.com/license/
+ */
+/*
+	TODO will need to remove settings on HTML since we can't namespace it.
+	TODO with the prefix, should I group by selector or property for weight savings.
+*/
+
+:root{
+	font-size: 10px;
+}
+
+html {
+	width: 100%;
+	color: #333;
+	background: #FFF;
+}
+body {
+	font-family: "メイリオ", Meiryo, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", "MS PGothic", Osaka, Helvetica, Arial, sans-serif;
+	font-size: 1.3rem;
+	line-height: 1.6;
+	letter-spacing: .08rem;
+ 	-webkit-text-size-adjust: none;
+	width: 100%;
+	background: #FFF;
+	overflow-x: hidden;
+}
+
+body > img,
+body > noscript > img,
+body > iframe {
+	display: none;
+}
+
+/*
+	TODO remove settings on BODY since we can't namespace it.
+*/
+/*
+	TODO test putting a class on HEAD.
+	- Fails on FF.
+*/
+body,div,dl,dt,dd,ul,ol,li,h1,h2,
+h3,h4,h5,h6,pre,code,form,fieldset,
+legend,input,textarea,p,blockquote,th,td {
+	margin: 0;
+	padding: 0;
+	word-break: break-word;
+	-webkit-overflow-scrolling: touch;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+table br {
+	display: none !important;
+}
+table th br,
+table td br {
+	display: inline !important;
+}
+fieldset,
+img {
+	border: 0;
+}
+
+*,
+::before,
+::after {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/*
+	TODO think about hanlding inheritence differently, maybe letting IE6 fail a bit...
+*/
+address,caption,cite,code,dfn,em,th,var {
+	font-style: normal;
+	font-weight: normal;
+}
+ul {
+	list-style: none;
+}
+caption,
+th {
+	text-align: left;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size: 100%;
+	font-weight: normal;
+}
+q:before,
+q:after {
+	content: '';
+}
+abbr,
+acronym {
+	border: 0;
+	font-variant: normal;
+}
+/* to preserve line-height and selector appearance */
+sup {
+	vertical-align: text-top;
+}
+sub {
+	vertical-align: text-bottom;
+}
+
+label {
+	cursor: pointer;
+}
+
+input[type=tel],
+input[type=text],
+input[type=file],
+input[type=email],
+input[type=reset],
+input[type=image],
+input[type=button],
+input[type=submit],
+input[type=number],
+input[type=password],
+textarea, select, textarea {
+	font-family: "メイリオ", Meiryo, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", "MS PGothic", Osaka, Helvetica, Arial, sans-serif;
+	font-size: 1.3rem;
+	font-weight: inherit;
+	border: none;
+	-webkit-appearance: none;
+	appearance: none;
+	border-radius: 0;
+	outline: none;
+}
+input {
+	font-family: "メイリオ", Meiryo, "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", "MS PGothic", Osaka, Helvetica, Arial, sans-serif;
+	font-size: 1.3rem;
+	font-weight: inherit;
+	outline: none;
+}
+.select_wrap {
+	position: relative;
+	display: block;
+	font-size: 0;
+}
+.select_wrap::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 5px;
+	right: 14px;
+	width: 12px;
+	height: 12px;
+	border-right: #333 1px solid;
+	border-bottom: #333 1px solid;
+
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+select {
+	display: block;
+	font-size: 1.3rem;
+	background: #FFF;
+	padding: 5px 42px 5px 10px;
+}
+select::-ms-expand {
+    display: none;
+}
+/*because legend doesn't inherit in IE */
+legend {
+	color: #333;
+}
+/* YUI CSS Detection Stamp */
+#yui3-css-stamp.cssreset { display: none;}
+
+img {
+	vertical-align: bottom;
+	width: 100%;
+	height: auto;
+	image-rendering: -webkit-optimize-contrast;
+}
+
+/* clearfix */
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	height: 0;
+	visibility: hidden;
+}
+
+.clearfix {
+	min-height: 1px;
+}
+
+* html .clearfix {
+	height: 1px;
+	/*\*//*/
+	height: auto;
+	overflow: hidden;
+	/**/
+}
+
+a, .btn, .fade_btn {
+  background-color: transparent; /* Remove the gray background on active links in IE 10 */
+  -webkit-text-decoration-skip: objects; /* Remove gaps in links underline in iOS 8+ and Safari 8+ */
+	text-decoration: none;
+	color: #333;
+	opacity: 1;
+	cursor: pointer;
+
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+}
+
+a:active,
+a:hover,
+.btn:active,
+.btn:hover {
+	outline-width: 0; /* Remove the outline when hovering in all browsers */
+}
+
+.fade_btn:hover {
+	opacity: .5;
+}
+
+/* translate */
+.translate {
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+.translateX {
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+.translateY {
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.transition {
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+}
+
+/* JqvaScriptで動的に付与 */
+.current {
+	cursor: default;
+	text-decoration: none !important;
+}
+
+#fb-root {
+	display: none;
+}
+
+.modal {
+	position:fixed;
+	display:flex;
+	flex-direction:column;
+	/* width:calc(100% - 60px); */
+	/* max-width:550px; */
+	height:auto;
+	padding: 30px 20px;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+	background:#FFF;
+	border:1px solid #000;
+	color:#000;
+	justify-content:center;
+	align-items:center;
+	text-align: center;
+	opacity:0;
+	z-index:1000;
+	transition: opacity 0.5s;
+}
+.modal a {
+	text-decoration:underline;
+}
+.modal br.vc {
+	display:none;
+}
+.modal.vc br.vc {
+	display:block;
+}
+.modal br.vf {
+	display:block;
+}
+.modal.vc br.vf {
+	display:none;
+}
+.modal.on {
+	opacity:1;
+}
+.modal h5 {
+	width:100%;
+	font-size:1.8rem;
+	text-align:center;
+	margin:0;/**/
+	padding:0;/**/
+	margin-bottom:30px;
+	padding-bottom:30px;
+	border-bottom:1px solid #000;
+}
+.modal h5 + p {
+	font-size:1.4rem;
+	line-height:1.6;
+}
+.modal .close {
+	display:block;
+	overflow:hidden;
+	cursor:pointer;
+	width:200px;
+	margin-top:20px;
+	padding:10px 0;
+	border-radius:60px;
+	border:1px solid #000;
+	font-size: 1.4rem;
+    line-height: 1;
+    opacity:1;
+    transition:all 0.5s;
+}
+.modal .close:hover {
+	opacity:0.6;
+}
+.modal p span {
+	display:block;
+	text-align:center;
+	margin:20px 0 0;
+}
+.modal.vc p span {
+	display:inline;
+}
+/* visit 2- */
+.modal.vc {
+	left:0;
+	top:auto;
+	bottom:0;
+	transform: translate(0,0);
+	border:none;
+	background:rgba(255,255,255,0.95);
+	padding:15px 20px;
+}
+.modal.vc h5 {
+	font-size:1.4rem;
+	border:none;
+	margin-bottom:15px;
+	padding-bottom:0;
+	line-height:1;
+	text-align:left;
+}
+.modal.vc h5 + p {
+	font-size:1.1rem;
+	text-align:left;
+}
+.modal.vc .close {
+	display:block;
+	position:absolute;
+	text-indent:-9999px;
+	top:0;
+	right:0;
+	width:52px;
+	height:42px;
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+.modal.vc .close::before {
+	position: absolute;
+	content: "";
+	display: block;
+	width: 2px;
+	height: 16px;
+	background-color: #000;
+	margin: auto 0;
+	top: 0;
+	bottom: 0;
+	left: 20px;
+	transform: rotate(45deg);
+}
+.modal.vc .close::after {
+	position: absolute;
+	content: "";
+	display: block;
+	width: 2px;
+	height: 16px;
+	background-color: #000;
+	margin: auto 0;
+	top: 0;
+	bottom: 0;
+	left: 20px;
+	transform: rotate(135deg);
+}
+@media screen and (max-width: 900px) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+@media screen and (max-width: 480px) {
+	.modal {
+		width: calc(100% - 40px);
+	}
+	.modal.vc h5,
+	.modal h5 + p {
+		text-align:left !important;
+	}
+	.modal.vc br.vc {
+		display:none;
+	}
+	.modal br.vf {
+		display:none;
+	}
+}

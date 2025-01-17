@@ -1,0 +1,1002 @@
+/*_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+jQuery Functions
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/ */
+
+(function($)
+{
+	//---------------------------------------------------------------------
+	$(function()
+	{
+		var agent = navigator.userAgent;
+
+		if(agent.search(/iPhone/) == -1 && agent.search(/iPad/) == -1 && agent.search(/iPod/) == -1 && agent.search(/Android/) == -1){
+			$('body').addClass('pc');
+		} else {
+			$('body').addClass('sp');
+			$('.panel_content.home .pagelink li a').removeAttr('onclick');
+		}
+		$.AXISconf.commonScrollLink();
+		$.AXISconf.commonSelfLink();
+        $.AXISconf.commonScrollTop();
+		$.AXISconf.commonGnav();
+		$.AXISconf.commonIconNav();
+		$.AXISconf.commonAddTel();
+
+		if($('body.general.sp').length){
+			$.AXISconf.commonSpSideMwnuAccordion();
+		}
+
+		$.AXISconf.indexBnannerText();
+
+		if($('body.general').length){
+			if($('body.home')) {
+				$.AXISconf.homeMenuNav();
+				$.AXISconf.videoAdjust();
+                //$.AXISconf.homeBgAdjust();
+			}
+		}
+		if($('body.general.home').length){
+			//$.AXISconf.topticker();
+		}
+		if($('body.home')) {
+			$.AXISconf.homeContentHeight();
+			$.AXISconf.topticker();
+            $.AXISconf.homeMovie();
+		}
+
+		if($('body.history').length){
+			//$.AXISconf.photoBoxHeight();
+		}
+
+		if($('.inquiry').length){
+			$.AXISconf.radioChange();
+		}
+
+		if($('.search_word').length){
+			$.AXISconf.searchMenu();
+		}
+
+		if($('body.menu').length){
+			$.AXISconf.menuAccordion();
+			$.AXISconf.menuCheckAll();
+			$.AXISconf.menuContentHeight();
+		}
+		if($('body.menu.list').length){
+			$.AXISconf.menuPulldownSort();
+		}
+
+		if($('body.campaign').length){
+			$.AXISconf.tabChange();
+		}
+		if($('body.reserve').length){
+			$.AXISconf.faqAccordion();
+		}
+
+		if($('body.scrollify').length && $('body.pc').length){
+			$('.panel_bg_box').imagesLoaded(function(){
+				$('#wrapper').addClass('complete');
+				$('.panel_content').stop().delay(3000).animate({
+					opacity: 1
+				}, 500, 'easeInQuart');
+
+				$('.panel_bg_box').css('height', window.innerHeight);
+
+				$.scrollify({
+					section: '.panel_content',
+					easing: 'easeOutExpo',
+					scrollSpeed: 1100,
+					afterResize: function(){
+						$('.panel_bg_box').css('height', window.innerHeight);
+					}
+				});
+			});
+		}else {
+			$('#wrapper').addClass('complete');
+			$('.panel_content').css('opacity', 1);
+		}
+
+		if($('#mainSlider').length){
+			$.AXISconf.imgChange();
+		}
+		if($('.general-top-slider-block').length){
+			$.AXISconf.topImgChange();
+		}
+
+		$.AXISconf.platformCheck();
+		
+		$(document).ready(function() {
+			$('a[href^="https://origintoshu-recruit.jp/"]').attr("href", "https://origintoshu.saiyo-job.jp/qyh3/recruit/")
+		});
+		
+	});
+	//---------------------------------------------------------------------
+	$.AXISconf =
+	{
+		//---------------------------------------------------------------------
+		commonScrollTag: function(){
+			var ua = navigator.userAgent;
+			var scrollTag = ((!window.chrome && 'WebkitAppearance' in document.documentElement.style) || ua.indexOf('OPR') !== -1) ? 'body' : 'html';
+			return scrollTag;
+		}
+		,
+		//---------------------------------------------------------------------
+		commonSelfLink: function(){
+			var c = $.extend({
+				selfLinkClass:'current'
+			});
+
+			$.AXISconf.selfLinkClass = '.' + c.selfLinkClass;
+			$.AXISconf.theUrl = location.href.replace(location.hash, '');
+			var theUrl = $.AXISconf.theUrl.replace(/(\/|\#)$/, '/');
+
+			$('.side_nav a[href]').each(function(){
+				var i = document.createElement('span');
+				i.innerHTML = '<a href="' + $(this).attr('href') + '" />';
+				var absolutePath = i.firstChild.href.replace(/(\/|\#)$/, '/');
+
+				if(absolutePath == theUrl){
+					$(this).addClass(c.selfLinkClass).removeAttr('href');
+				}
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		commonScrollLink: function(){
+			var scrollSpeed = 1000, // スクロール時間（ミリ秒）
+			buttonOffset = 200; // トップへ戻る固定ボタンを表示するスクロール量（px）
+            // スムーズスクロール
+
+            $(window).on('load orientationchange resize', function(){
+                if(window.innerWidth < 900){
+                    $(".pagelink-item").removeAttr("onClick");
+                } else {
+                    $('a[href^="#"]').on( 'click', function() {
+                        var href= $(this).attr( 'href' );
+                        if ( href !== '#' || href !== '' ) {
+                            if($('body.scrollify').length){
+                              var target = ( href === '#top' && !$('#top').length ) ? 'html' : href,
+                              position = $(target).offset().top;
+                            }else {
+                              var target = ( href === '#top' && !$('#top').length ) ? 'html' : href,
+                              position = $(target).offset().top - 60;
+                            }
+                            $($.AXISconf.commonScrollTag()).animate( {scrollTop:position}, scrollSpeed, 'swing' );
+                            return false;
+                        }
+                    });
+                }
+            });
+            
+
+			var url = location.href;
+			if(url.indexOf("?") != -1 && url.indexOf("menuListBox") != -1){
+				var url = location.href;
+				params = url.split('?');
+				if(params[1] != undefined){
+					spparams = params[1].split('&');
+
+					var paramArray = [];
+					for(i=0; i<spparams.length; i++){
+						vol = spparams[i].split('=');
+						paramArray.push(vol[0]);
+						paramArray[vol[0]] = vol[1];
+					}
+
+					var scrollBox = $('#' + paramArray['anchor']);
+					scrollBox.imagesLoaded(function(){
+						if(paramArray['anchor'] != '') {
+							var position = scrollBox.offset().top;
+							$('body, html').animate({scrollTop: position}, scrollSpeed, 'swing');
+						}
+					});
+				}
+			}
+		}
+		,
+		//---------------------------------------------------------------------
+		commonGnav: function(){
+			var header = $('#header');
+			var target = $('#header .g_nav');
+			var fixPos = parseInt(target.css('top'));
+			var pulldown = target.find('.pulldown');
+			var trigger = $('.g_nav_trigger, .g_nav .close');
+			var iconNav = $('.icon_nav');
+			var pin = 'pin';
+			var fix = 'fix';
+			var prePos = nowPos = 0;
+
+			trigger.on('click', function(){
+				header.toggleClass(pin);
+			});
+
+			$(document).on('click touchend', function(event){
+				if(!$(event.target).closest('.g_nav_trigger').length && !$(event.target).closest('.g_nav').length){
+					header.removeClass(pin);
+				}
+			});
+
+			function gNavFix(){
+				if($($.AXISconf.commonScrollTag()).scrollTop() > fixPos){
+					header.addClass(fix);
+				}else {
+					header.removeClass(fix);
+				}
+
+				prePos = nowPos;
+				nowPos = $(window).scrollTop();
+				var conPos = 0;
+				if($('#container').length) conPos = $('#container').offset().top;
+				if($('body.scrollify').length) conPos = $('.panel_inner').eq(0).offset().top;
+
+				if((window.innerWidth <= 900) && ($($.AXISconf.commonScrollTag()).scrollTop() > conPos)){
+					if(nowPos >= prePos){
+						//下にスクロールした場合
+						iconNav.addClass('wide').removeClass(pin);
+					}else {
+						iconNav.addClass('wide').addClass(pin);
+					}
+				}else {
+					iconNav.removeClass('wide').removeClass(pin);
+				}
+			}
+			$(window).on('scroll orientationchange resize', function(){
+				gNavFix();
+			});
+			gNavFix();
+
+			pulldown.each(function(p){
+				var def_txt_img = $(this).find('.description');
+				def_txt_img.find('dt p').eq(0).show();
+				def_txt_img.find('dd img').eq(0).show();
+
+				$(this).find('.menu a').each(function(n){
+					$(this).hover(function(){
+						var txt_img = pulldown.eq(p).find('.description');
+						txt_img.find('dt p').eq(n).stop(false, true).fadeIn(300).siblings().stop(false, true).fadeOut(300);
+						txt_img.find('dd img').eq(n).stop(false, true).fadeIn(300).siblings().stop(false, true).fadeOut(300);
+					},
+					function(){
+						//Empty
+					});
+				});
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		commonIconNav: function(){
+			var trigger = $('.icon_nav').find('.item');
+
+			trigger.each(function(){
+				if($(this).find('.pulldown').length){
+					var pulldown = $('.icon_nav').find('.pulldown');
+
+					if($('body.pc').length){
+						$(this).hover(function(){
+							pulldown.stop().slideDown(300);
+						}, function(){
+							pulldown.stop().slideUp(300);
+						});
+					}
+
+					if($('body.sp').length){
+						$(this).click(function(){
+							pulldown.stop().slideToggle(300);
+						});
+					}
+				}
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		commonAddTel: function(){
+			var ua = navigator.userAgent;
+			if(ua.indexOf('iPhone') > 0 || ua.indexOf('Android') > 0){
+				$('.tel_link').each(function(){
+                    
+					$(this).find('span[data-action=call]').each(function() {
+                        console.log($(this));
+                        
+						var $ele = $(this);
+						$ele.wrap('<a href="tel:' + $ele.data('tel') + '"></a>');
+					});
+					$(this).on('click', function(e){
+						ga('send', 'event', 'smartphone', 'phone-number-tap', 'main');
+					});
+				});
+			}
+		}
+		,
+		//---------------------------------------------------------------------
+		topticker:function (){
+
+			$(function(){
+				$("div.ticker").each(function () {
+					var num = $(this).find('ul > li').length;
+
+					if(num > 1){
+						function ticker(){
+							$('.ticker ul li:first').slideUp( function(){
+								$(this).appendTo($('.ticker ul')).slideDown();
+							});
+						}
+						setInterval(function(){ticker()}, 5000);
+					}
+				});
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		commonSpSideMwnuAccordion: function(){
+			$('#header .g_nav .g_nav_bar .g_nav_link > span').on('click', function(){
+				$(this).toggleClass('dropdown_toggle').next('.pulldown').children('.menu').slideToggle();
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		gaEvent: function(category, action, label){
+			ga('send', {
+				hitType: 'event',
+				eventCategory: category,
+				eventAction: action,
+				eventLabel: label
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		radioChange: function(){
+			$("#cat1_1").prop('disabled', true);
+			$("#cat1_1").css('background-color', '#bdc3c7');
+			//
+			$('[name=cat1]').click(function() {
+				if($('input[name=cat1]:eq(2)').prop('checked')){
+					$('#cat1_1').prop('disabled', false).css('background-color', '#FFF');
+				}else{
+					$('#cat1_1').prop('disabled', true).css('background-color', '#bdc3c7');
+				}
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		indexBnannerText: function(){
+			if($('.panel.w3').length < 1) return false;
+
+				var $setElm = $('.panel.w3 > a > p');
+				var cutFigure = '60'; // カットする文字数
+				var afterTxt = ' … more'; // 文字カット後に表示するテキスト
+
+				$setElm.each(function(){
+				var textLength = $(this).text().length;
+				var textTrim = $(this).text().substr(0, cutFigure);
+
+				if(cutFigure < textLength) {
+				  $(this).html(textTrim + afterTxt).css({visibility:'visible'});
+				} else if(cutFigure >= textLength) {
+				  $(this).css({visibility:'visible'});
+				}
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		commonScrollTop: function(){
+			$('body').imagesLoaded(function(){
+				var btn = $('#backTop');
+				if(!btn.length) return false;
+
+				var top = 'top';
+				var bottom = 'bottom';
+				var pTop = $('#wrapper .content_panel').length ? 40 : 0;
+				var btnH = btn.height() + parseInt(btn.css('bottom')) + pTop; //ボタンの高さ + bottomの値 + #containerのpaddingTop
+
+				btn.fadeIn(300).css('display', 'block');
+
+				function scrollBtnFix(){
+					var winH = window.innerHeight;
+					var topPos = ($('#container').length) ? $('#container').offset().top : btnH;
+					var bottomPos = ($('#footer').length) ? $('#footer').offset().top : 0;
+
+					if(winH + $($.AXISconf.commonScrollTag()).scrollTop() < topPos){
+						btn.addClass(top);
+					}else if(winH + $($.AXISconf.commonScrollTag()).scrollTop() > bottomPos){
+						btn.addClass(bottom);
+					}else {
+						btn.attr('class', '');
+					}
+				}
+				$(window).on('scroll orientationchange resize', function(){
+					scrollBtnFix();
+				});
+				scrollBtnFix();
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		homeContentHeight: function(){
+			$('.panel_wrap').imagesLoaded(function(){
+				var target = $('.panel_wrap .panel.news a');
+
+				function heightAdjust(){
+					var maxH = 0;
+					target.css('height', '');
+
+					if(window.innerWidth > 768){
+						target.each(function(){
+							maxH = Math.max($(this).prop('offsetHeight'), maxH);
+						});
+
+						target.css('height', maxH);
+					}
+				}
+				$(window).on('orientationchange resize', function(){
+					heightAdjust();
+				});
+				heightAdjust();
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		homeMenuNav: function(){
+			var trigger = $('.content_nav .content_inner li');
+
+			trigger.each(function(){
+				if($(this).find('.pulldown').length){
+					var pulldown = $(this).find('.pulldown');
+
+					if($('body.pc').length){
+						$(this).hover(function(){
+							pulldown.stop().slideDown(300);
+						}, function(){
+							pulldown.stop().slideUp(300);
+						});
+					}
+
+					if($('body.sp').length){
+						$(this).click(function(){
+							pulldown.stop().slideToggle(300);
+						});
+					}
+				}
+			});
+		},
+		//---------------------------------------------------------------------
+		homeMovie: function(){
+        // 切り替える対象にclass属性。
+        var $elem = $('.switch');
+
+        // 切り替えの対象のsrc属性の末尾の文字列。
+        var sp = '_sp.';
+        var pc = '_pc.';
+
+        // 画像を切り替えるウィンドウサイズ。
+        var replaceWidth = 599;
+
+        function imageSwitch() {
+            // ウィンドウサイズを取得する。
+            var windowWidth = parseInt($(window).width());
+
+            // ページ内にあるすべての`.switch`に適応される。
+            $elem.each(function() {
+                var $this = $(this);
+                if(windowWidth >= replaceWidth) {
+                    $this.attr('src', $this.attr('src').replace(sp, pc));
+                } else {
+                    $this.attr('src', $this.attr('src').replace(pc, sp));
+                }
+            });
+        }
+            
+        imageSwitch();
+
+        var resizeTimer;
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                imageSwitch();
+            }, 200);
+        });
+        }
+        ,
+		//---------------------------------------------------------------------
+		homeSpMovie: function(){
+			var video = $('.main_movie').get(0);
+			video.play();
+			if(video.readyState === 4){
+				video.play();
+				$('.main_movie_box').addClass('complete');
+			}else {
+				video.addEventListener('canplaythrough', function(e){
+					video.removeEventListener('canplaythrough', arguments.callee);
+					video.play();
+					$('.brandImg').addClass('complete');
+				});
+			}
+		}
+		,
+		//---------------------------------------------------------------------
+        homeBgAdjust: function(){
+            $(window).on('load orientationchange resize', function(){
+                if(window.innerWidth > 480){
+                // 1.関数の定義
+                    function setHeight() {
+                    let vh = window.innerHeight * 0.01;
+                        document.documentElement.style.setProperty('--vh', `${vh}px`);
+                    }
+
+                    // 2.初期化
+                    setHeight();
+
+                    // 3.ブラウザのサイズが変更された時・画面の向きを変えた時に再計算する
+                    window.addEventListener('resize', setHeight);
+                }
+            });
+        }
+        ,
+		//---------------------------------------------------------------------
+		videoAdjust: function(){
+            $(window).on('load orientationchange resize', function(){
+                if(window.innerWidth > 480){
+                    var movieRatio = 16/9;
+                    function movieAdjust(){
+                        var adjustWidth = $(window).width();
+                        var adjustHeight = $(window).height();
+                        if (adjustHeight > adjustWidth / movieRatio) {
+                            adjustWidth = adjustHeight * movieRatio;
+                        }
+                        $('.general-top-slider-block').css({width:(adjustWidth),height:(adjustWidth/movieRatio)});
+                    }
+                    $(window).on('load resize', function(){
+                        movieAdjust();
+                    });
+                    movieAdjust();
+                }
+            });
+		}
+		,
+		//---------------------------------------------------------------------
+		photoBoxHeight: function(){
+			function setPartsHeight(){
+				var elem = document.getElementsByClassName("group");
+				var maxH = $('.box.photo.max').height() + 40;
+				setHeight(elem, maxH);
+			}
+			// 最も大きい値を各Elementsに付与
+			function setHeight(target,h){
+				var w = $(window).width();
+				if(w > 414){
+					for(var h_i = 0;h_i<target.length;h_i++){
+						target[h_i].style.height = h+"px";
+					}
+				}else {
+					for(var h_i = 0;h_i<target.length;h_i++){
+						target[h_i].style.height = "auto";
+					}
+				}
+			}
+			$(window).on('load resize', function(){
+				setPartsHeight();
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		searchMenu: function(){
+			$('.search_form').each(function(){
+				var input = $(this).find('.search_word');
+				var btn = $(this).find('.search_btn');
+
+				input.focus(function(){
+					$(this).parent().addClass('focus');
+				})
+				$(document).on('click touchend', function(event){
+					if(!$(event.target).closest('.search_form').length){
+						$('.search_form').removeClass('focus');
+					}
+				});
+
+				btn.each(function(){
+					$(this).on('click', function(){
+						var path = location.pathname.split('/');
+						var name = $(this).attr('name');
+
+						//多言語対策
+						if(path[1] == 'en'){
+							path = '/' + path[1] + '/' + path[2];
+						}else if(path[1] == 'cn'){
+							path = '/' + path[1] + '/' + path[2];
+						}else {
+							path = '/' + path[1];
+						}
+
+						if(name.indexOf('west') < 0){
+							path += '/area_east/list.html?anchor=menuListBox';
+						}else {
+							path += '/area_west/list.html?anchor=menuListBox';
+						}
+
+						$(this).parent().parent().attr('action', path).submit();
+
+						return false;
+					});
+				});
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		menuAccordion: function(){
+			var target = $('.accordion_box h2');
+
+			target.each(function(){
+				$(this).on('click', function(){
+					$(this).toggleClass('open').next().stop().slideToggle(300);
+				});
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		menuCheckAll: function(){
+			var trigger = $('input.check_all');
+			var target = $('input[name="categories[]"]');
+
+			trigger.each(function(){
+				$(this).on('click', function(){
+					target.prop('checked', false);
+				});
+			});
+
+			target.each(function(){
+				$(this).on('click', function(){
+					trigger.prop('checked', false);
+				});
+			});
+
+			//アレルゲンリストのチェック全ハズし
+			var allergy_uncheck_btn = $('.allergy_uncheck');
+			var allergy_target = allergy_uncheck_btn.parent().siblings().find('input[type="checkbox"]');
+
+			allergy_uncheck_btn.on('click', function(){
+				allergy_target.prop('checked', false);
+			});
+		}
+		,
+		//---------------------------------------------------------------------
+		menuContentHeight: function(){
+			var list = $('.result_menu_list > li');
+			var heightArray = [];
+			var h3Max = 0;
+			var pMax = 0;
+			var nMax = 0;
+
+			function heightAdjust(){
+				list.each(function(i){
+					var h3 = $(this).find('.txt h3').prop('offsetHeight');
+					var p = $(this).find('.txt .price_txt').prop('offsetHeight');
+					var n = $(this).find('.txt .nutrient_txt').prop('offsetHeight');
+
+					if(h3 > 0){
+						h3Max = Math.max(h3Max, h3);
+						pMax = Math.max(pMax, p);
+						nMax = Math.max(nMax, n);
+					}
+
+					if(i % lineNum() == lineNum() - 1 || i + 1 == list.length){
+						var listArray = [h3Max, pMax, nMax];
+						heightArray.push(listArray);
+
+						numReset();
+					}
+				});
+
+				list.each(function(i){
+					var line = Math.floor(i / lineNum());
+
+					$(this).find('.txt h3').css('height', heightArray[line][0]);
+					//$(this).find('.txt .price_txt').css('height', heightArray[line][1]);
+					$(this).find('.txt .price_txt').css('height', "38px");
+					$(this).find('.txt .nutrient_txt').css('height', heightArray[line][2]);
+				});
+
+				function catListHeight(){
+					var lastLine = lineNum() - 1;
+					var lastNum = list.length - 1;
+
+					list.each(function(i){
+						if($(this).hasClass('cat_icon') && lastLine > 0){
+							var line = Math.floor(i % lineNum());
+
+							if(line == lastLine || i == lastNum){
+								$(this).css('height', $(this).prev().prop('offsetHeight'));
+							}else {
+								$(this).css('height', $(this).next().prop('offsetHeight'));
+							}
+						}
+					});
+				}
+				//catListHeight();
+			}
+
+			function lineNum(){
+				var num = 4;
+
+				if(window.innerWidth <= 300){
+					num = 2;
+				}else if(window.innerWidth <= 640){
+					num = 2;
+				}else if(window.innerWidth <= 768){
+					num = 3;
+				}
+
+				return num;
+			}
+
+			function numReset(){
+				h3Max = 0;
+				pMax = 0;
+				nMax = 0;
+
+				list.find('.txt h3, .txt p').attr('style', '');
+			}
+
+			$(window).on('load orientationchange resize', function(){
+				numReset();
+				heightArray = [];
+
+				if(lineNum() > 1) heightAdjust();
+			});
+
+			numReset();
+			if(lineNum() > 1) heightAdjust();
+		}
+		,
+		//---------------------------------------------------------------------
+		tabChange: function(){
+			$('.areaSelect li').each(function(i){
+				$(this).on('click', function(){
+					tabChange(i);
+				});
+			});
+			//function
+			function tabChange(n){
+				$('.calendar li').css('display','none');
+				$('.calendar li').eq(n).css('display','block');
+				$('.areaSelect li').removeClass('current');
+				$('.areaSelect li').eq(n).addClass('current');
+			}
+		}
+		,
+		//---------------------------------------------------------------------
+		menuPulldownSort: function(){
+				$('#container > form').attr('id', 'form1');
+				$('[name=sort]').change(function(){
+				$("#form1").submit();
+	    	});
+		}
+		,
+		//---------------------------------------------------------------------
+		imgChange: function(){
+			var sp = '_sp.';
+			var pc = '_pc.';
+			var replaceWidth = 720;
+			
+			function imageSwitch() {
+				var windowWidth = parseInt($(window).width());
+				$(document).find('#mainSlider li img').each(function() {
+					var $this = $(this);
+					if(windowWidth >= replaceWidth) {
+						$this.attr('src', $this.attr('src').replace(sp, pc));
+					} else {
+						$this.attr('src', $this.attr('src').replace(pc, sp));
+					}
+				});
+			}
+			imageSwitch();
+
+			var resizeTimer;
+			$(window).on('resize', function() {
+				clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(function() {
+					imageSwitch();
+				}, 200);
+			});
+		},
+		//---------------------------------------------------------------------
+		topImgChange: function(){
+			var sp = '_sp.';
+			var pc = '_pc.';
+			var replaceWidth = 480;
+			
+			function imageSwitch() {
+				var windowWidth = parseInt($(window).width());
+				$(document).find('.general-top-slider-block li.general-top-slider-item .general-top-slider-img').each(function() {
+					var $this = $(this);
+					if(windowWidth >= replaceWidth) {
+						$this.attr('src', $this.attr('src').replace(sp, pc));
+					} else {
+						$this.attr('src', $this.attr('src').replace(pc, sp));
+					}
+				});
+			}
+			imageSwitch();
+
+			var resizeTimer;
+			$(window).on('resize', function() {
+				clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(function() {
+					imageSwitch();
+				}, 200);
+			});
+		},
+		//---------------------------------------------------------------------
+		faqAccordion: function(){
+			$('div.faq ul').each(function(){
+				$(this).children('li:nth-child(even)').hide();
+				$(this).children('li:nth-child(odd)').on('click', function(){
+					$(this).toggleClass('open');
+					$(this).next().toggleClass('open');
+					$(this).next().slideToggle(300);
+				});
+			});
+		}
+		,
+		//--------------------------------------------------------------------- Cookie + platform
+		platformCheck: function(){
+			//Cookie
+		    var $count = getCookie('visitCheck');// クッキーに保存した訪問回数を取得し、変数「$count」に格納
+		    if( !$count ){ // 変数「$count」が空の場合の処理
+		        setCookie('visitCheck', 1, 14);
+		    }else{ // 変数「$count」が空でない場合の処理
+		        setCookie('visitCheck', ++$count, 14);
+		    }
+		    //console.log($count);
+
+			function setCookie( $cookieName, $cookieValue, $days ){// クッキーを設定する関数
+			    var $dateObject = new Date();// Dateオブジェクトを生成
+			    $dateObject.setTime( $dateObject.getTime() + ( $days*24*60*60*1000 ) );// クッキーの有効期限を示すDateオブジェクトを生成
+			    // 有効期限をグリニッジ標準時に変換
+			    var $expires = "expires=" + $dateObject.toGMTString();// 有効期限をクッキーに設定するための文字列を、変数「$expires」に代入
+			    document.cookie = $cookieName + "=" + $cookieValue + "; " + $expires;// 有効期限付きでクッキーを設定
+			}
+			// クッキーを取得する関数
+			function getCookie( $cookieName ){
+			    var $cookies = document.cookie.split(';');// 「;」区切りで分割し、配列「$cookies」に格納
+			    for( var $i=0; $i < $cookies.length; $i++ ){// クッキーの数だけループ
+			        var $cookie = $cookies[$i].trim().split( '=' );// クッキーを「=」区切りで分割し、配列「$cookie」に格納
+			        if( $cookie[0] == $cookieName ){// クッキー名が仮引数「$cookieName」と同じであれば値を返す
+			            return $cookie[1];
+			        }
+			    }
+			    return "";
+			}
+			function deleteCookie( $cookieName ){
+				document.cookie = $cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";// 過ぎた有効期限を設定することで削除できる
+			}
+			$(window).on('load', function(){
+				console.log('load');
+				$('#header').on('click', function(){
+					console.log('cookie delete');
+					deleteCookie('visitCheck');
+					deleteCookie('closeCheck');
+				});
+			});
+
+			// SP judge
+			var targetFlag = false;
+		    var spFlag = false;
+		    var ua = navigator.userAgent;
+		    if(ua.indexOf('Android') > 0 || ua.indexOf('iPhone') > 0 || ua.indexOf('iPad') > 0){
+		      spFlag = true;
+		    }
+
+		    //ブラウザを判別
+		    var userAgent = window.navigator.userAgent.toLowerCase();
+		    var browserName = '';
+
+		    if(userAgent.indexOf('trident') != -1){
+		      browserName = 'IE';
+		    }else if(userAgent.indexOf('edge') != -1){
+		      browserName = 'Edge';
+		    }else if(userAgent.indexOf('chrome') != -1){
+		      browserName = 'Chrome';
+		    }else if(userAgent.indexOf('safari') != -1){
+		      browserName = 'Safari';
+		    }else if(userAgent.indexOf('firefox') != -1){
+		      browserName = 'FF';
+		    }else {
+		      browserName = '';
+		    }
+
+		    if( userAgent.match(/(msie|MSIE)/) || userAgent.match(/(T|t)rident/) ) {
+			    var isIE = true;
+			    var ieVersion = userAgent.match(/((msie|MSIE)\s|rv:)([\d\.]+)/)[3];
+			    ieVersion = parseInt(ieVersion);
+			    //console.log("IE:"+ieVersion);
+			}
+
+		    // iOSのバージョン判断
+		    function ios_ver(){
+		      var ios_ua = navigator.userAgent;
+		      if(ios_ua.indexOf('iPhone') > 0){
+		        ios_ua.match(/iPhone OS (\w+){1,3}/g);
+		        var version = (RegExp.$1.replace(/_/g, '') + '00').slice(0, 4);
+		        spFlag = true;
+		        return version;
+		      }
+            if(ios_ua.indexOf('iPad') > 0){
+		        ios_ua.match(/CPU OS (\w+){1,3}/g);
+		        var version = (RegExp.$1.replace(/_/g, '') + '00').slice(0, 4);
+		        spFlag = true;
+		        return version;
+		      }
+		    }
+
+		    // Androidのバージョン判断
+		    function and_ver(){
+		      var and_ua = navigator.userAgent;
+		      if(and_ua.indexOf('Android') > 0){
+		        var version = parseFloat(and_ua.slice(and_ua.indexOf('Android') + 8)) * 10;
+		        return version;
+		      }
+		    }
+		    if(spFlag){
+		      //スマートフォンの場合
+		      if(ios_ver() >= 1100 || and_ver() >= 44){
+		        //iOS11以上もしくはAndroid4.4以上のケース
+		        var isAndroidBrowser = false;
+		        var ua = window.navigator.userAgent;
+		        if(/Android/.test(ua) && /Linux; U;/.test(ua) && !/Chrome/.test(ua)){
+		          isAndroidBrowser = true;
+		        }
+		        if((browserName == 'Chrome' || browserName == 'Safari') && !isAndroidBrowser){
+		          targetFlag = true;
+		        }
+		      }
+
+		    }else {
+				//Mac・Win端末の場合
+				if(browserName !== ''){
+					if(browserName == 'IE' || browserName == 'Edge'){// IE11以上 or Edge
+						if(ieVersion >= 11){
+							targetFlag = true;
+						}
+					}else if(browserName == 'Chrome'){// Chrome 65以上
+						var _st = ua.indexOf('Chrome');
+						var _ed = ua.indexOf(' ',_st);
+						var _ver = ua.substring(_st+7,_ed);
+						if(parseFloat(_ver) >= 65){
+							targetFlag = true;
+						}
+					}else if(browserName == 'Safari'){// Safari 11以上
+						var _st = ua.indexOf('Version');
+						var _ed = ua.indexOf(' ',_st);
+						var _ver = ua.substring(_st+8,_ed);
+						if(parseFloat(_ver) >= 11){
+							targetFlag = true;
+						}
+					}else if(browserName == 'FF'){// Firefox 58以上
+						var _st = ua.indexOf('Firefox');
+						var _ver = ua.substring(_st+8);
+						if(parseFloat(_ver) >= 58){
+							targetFlag = true;
+						}
+					}
+				}
+			}
+			//modal
+		    if(!targetFlag){
+				// modal風
+				$('html').append('<div class="modal"><h5>サイトが正しく表示されない場合</h5><p>ブラウザを最新バージョンにアップデートして<br class="vf">いただくと、<br class="vc">サイトが正しく表示されます。<span>推奨環境については<a href="/requirements/">こちら</a></span></p><p class="btn close">閉じる</p></div>');
+				//状態変更
+				var $vc = getCookie( 'visitCheck' );
+				if($vc > 1) $('.modal').addClass('vc');
+				$('.modal').delay(500).queue(function() {
+					$('.modal').addClass('on').dequeue();
+					$('.modal .close').on('click', function(){
+						$('.modal').removeClass('on').delay(600).queue(function() {
+							$('.modal').remove();
+						});
+					});
+				});
+			}
+		}
+	}
+//---------------------------------------------------------------------
+})(jQuery);

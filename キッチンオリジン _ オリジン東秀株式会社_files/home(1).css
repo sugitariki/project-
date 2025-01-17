@@ -1,0 +1,127 @@
+@charset "utf-8";
+/*_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+Home CSS (/kitchen_orijin/)
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/*/
+
+/* Opening
+-----------------------------------------*/
+.Opening {
+	position:fixed;
+	width:100%;
+	background-color: #FFF;
+}
+.Opening ul li{
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	text-align: center;
+}
+.Opening ul li img.Opening__text{
+	max-width:560px;
+	padding:0 15px;
+	position: absolute;
+	top:50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform:translate(-50%, -50%);
+	z-index: 0;
+}
+.Opening ul li span {
+}
+.Opening ul li span img.Opening__img{
+	max-width: inherit;
+	width: 100%;
+	height: auto;
+}
+.Opening ul li div.shadow {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,0.2);
+}
+
+#header {
+	background:none;
+	height:auto;
+}
+#header .top_bar,
+#header .homeOuter {
+	background-color: #FFF;
+}
+
+#brandImg,
+#header .catch_copy {
+	display: none;
+}
+
+
+@media screen and (max-width: 1200px) {
+
+}
+
+@media screen and (max-width: 1150px) {
+
+}
+
+@media screen and (max-width: 1100px) {
+
+}
+
+@media screen and (max-width: 1024px) {
+
+}
+
+@media screen and (max-width: 900px) {
+
+	#header .logo img {
+		display:block !important;
+	}
+
+}
+
+@media screen and (max-width: 800px) {
+
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------ Tablet */
+
+@media screen and (max-width: 768px) {
+
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------ Tablet thin */
+
+@media screen and (max-width: 640px) {
+
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------ SnmartPhone */
+
+@media screen and (max-width: 480px) {
+
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------ SnmartPhone */
+
+@media screen and (max-width: 460px) {
+
+	.Opening ul li img.Opening__text {
+		margin-top:50px;
+	}
+
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------ SmartPhone Thin */
+
+@media screen and (max-width: 320px) {
+
+}
